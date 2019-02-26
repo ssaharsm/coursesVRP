@@ -1,0 +1,79 @@
+Content Starts HereContent Starts Here
+Visualforce Page
+more_page
+Help for this Page
+Page Detail
+ 
+Label	more_page	Name	more_page
+Namespace Prefix		Available for Lightning Experience, Lightning Communities, and the mobile app	Not Checked
+Require CSRF protection on GET requests	Not Checked	Description	
+ 	Created By	Stas Sakharchuk,  2/12/2019 6:47 AM
+Last Modified By	Stas Sakharchuk,  2/14/2019 1:06 AM	 	 
+	
+	
+Visualforce Markup
+
+	
+	
+Version Settings
+
+
+<apex:page id="more_page" controller="sales_page" lightningStylesheets="true">
+ <apex:slds />
+<div class="slds-page-header">
+  <div class="slds-page-header__row">
+    <div class="slds-page-header__col-title">
+      <div class="slds-text-align_center slds-text-heading_large">
+         <div class="slds-text-longform"><b>{!productField.Name}</b></div>
+      </div>
+    </div>
+   </div>
+</div>
+
+<div class="slds-grid slds-gutters" style="width:100%">
+  <div class="slds-col" style="width: 50%; text-align: center; margin-top: 10px;">
+    <span><apex:image value="{!productField.Image_Url__c}"/></span>
+  </div>
+  <div class="slds-col" style="width: 50%">
+    <span>
+      <div style="padding: 50px 0 10px 0">
+                <div style="padding: 10px 0">
+                    <p><b>COST:</b></p>
+                    <p>{!productField.Unit_Price__c} $</p>
+                </div>
+                    <p><b>AMOUNT:</b></p>
+                    <p>{!productField.Units_Available__c}</p>
+                </div>
+                <div style="padding: 10px 0">
+                    <p><b>DESCRIPTION:</b></p>
+                    <p>{!productField.Product_Description__c}</p>
+                </div> 
+    </span>
+  </div>
+</div>
+
+
+
+
+<div class="slds-page-header">
+  <div class="slds-page-header__row">
+    <div class="slds-page-header__col-title">
+      <div class="slds-text-align_center slds-text-heading_small">
+        <apex:form >
+      
+          <apex:commandButton action="{!btnCancel}" value="Cancel" styleclass="slds-button slds-button_neutral"> 
+          </apex:commandButton>
+          <apex:commandButton action="{!Buy}" value="Buy" styleclass="slds-button slds-button_brand">
+          </apex:commandButton>
+        </apex:form> 
+      </div>
+    </div>
+   </div>
+</div>
+
+
+
+
+</apex:page>
+                                        
+ 	 
