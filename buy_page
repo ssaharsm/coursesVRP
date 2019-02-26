@@ -1,0 +1,109 @@
+<apex:page controller="sales_page" id="buy_page" lightningStyleSheets="true">
+ <apex:slds />
+  
+  <div class="slds-page-header slds-text-heading_medium" style="display: flex; justify-content: space-around">
+        <div class="slds-text-align_center"><b>Contact Information</b></div>
+        <div class="slds-text-align_center"><b>Product Information</b></div>
+  </div>
+<div class="slds-vf-scope">
+  <apex:form >
+ <!--Contact  Information -->
+<div class="demo-only slds-grid slds-wrap">
+                <div class="slds-size_1-of-2">
+                    <div class="slds-box slds-box_x-small slds-text-align_center slds-m-around_x-small">
+                        
+                        <apex:pageBlock >
+                            <apex:outputPanel layout="block" styleClass="slds-panel slds-grid slds-grid--vertical slds-nowrap slds-form--compound" style="width: 70%; margin: 0 auto;">
+                                <apex:pageBlockSection columns="1" showHeader="false">
+                                <div class="slds-form-element__control">
+                                        <apex:inputField styleClass="slds-input" value="{!contactinformation.Email}" />
+                                    </div>
+                                    <div class="slds-form-element__control">
+                                        <apex:inputField styleClass="slds-input" value="{!contactinformation.FirstName}" />
+                                    </div>
+                                    <div class="slds-form-element__control">
+                                        <apex:inputField styleClass="slds-input" value="{!contactinformation.LastName}" />
+                                    </div>
+                                </apex:pageBlockSection>
+                            </apex:outputPanel>
+                        </apex:pageBlock>
+                        
+                    </div>
+                </div>
+  
+  <!--Product Information -->
+  
+
+     
+    
+     <div class="slds-size_1-of-2">
+       <div class="slds-box slds-box_x-small slds-text-align_center slds-m-around_x-small"> 
+         <apex:pageBlock id="out">
+               <apex:outputPanel layout="block">    
+                     <apex:pageBlockSection columns="1" showHeader="false">     
+                                
+                      <apex:outputText value="{!productField.Name}" />
+                                      
+                      
+                      <apex:outputText value="{!productField.Unit_Price__c} " /> 
+                      
+                  
+                      <div style="padding: 10px 0" class="slds-form-element__control">                                           
+                      <apex:inputField value="{!InstanceOfObject.Units__c}" onChange="changeUnitHandler()"/>                                           
+                      </div>                      
+                          <apex:outputText value="{!InstanceOfObject.Order_Amount__c}" />                  
+                   </apex:pageBlockSection>
+             </apex:outputPanel>
+        <apex:pageMessages />
+     </apex:pageBlock> 
+   
+<apex:actionFunction name="callCalcFunction" action="{!calculateOrderAmount}" reRender="out" />
+  
+    </div>
+  </div>
+ </div>
+
+
+
+
+
+
+
+
+<!--button Cancel and Buy -->
+ <div class="slds-page-header">
+  <div class="slds-page-header__row">
+    <div class="slds-page-header__col-title">
+      <div class="slds-text-align_center slds-text-heading_small">
+        
+      
+          <apex:commandLink action="{!btnCancel}" value="Cancel" styleclass="slds-button slds-button_neutral"> 
+          </apex:commandLink>
+          <apex:commandLink action="{!btnBuy}" value="Buy" styleclass="slds-button slds-button_brand">
+          </apex:commandLink>
+          
+         
+      </div>
+    </div>
+   </div>
+</div>
+
+</apex:form>
+</div> 
+ 
+ <script>
+ function changeUnitHandler() {
+            callCalcFunction();
+            console.log('Hi');
+        }
+ function coolBuy() {
+            alert('Hi');
+        }
+
+        function error() {
+            alert('One more time');
+        }
+ 
+ </script>
+
+</apex:page>
