@@ -1,0 +1,146 @@
+@isTest
+private class sales_pageTest {
+
+@testSetup static void testAutoRun() {
+
+        
+         
+        Product_Table__c productField = new Product_Table__c(
+                Name = 'Nokia_16_00',
+                Image_URL__c = 'https://c.ap8.visual.force.com/resource/1550824452000/Xiaomi',
+                Unit_Price__c = 100,
+                Product_description__c = 'phone that Can not be broken, in a word brick',
+                Units_Available__c = 3
+        );
+        insert productField;
+
+    }
+    
+ @isTest static void testRedirectToFullPageProduct (){
+        sales_page slspg = new sales_page();
+        List<Product_Table__c> prodTable = [SELECT ID FROM Product_Table__c LIMIT 1];
+        slspg.myProductId = prodTable[0].Id;
+        System.assertNotEquals(null, slspg.RedirectToFullPageProduct());
+    }  
+  @isTest static void testbuy (){
+        sales_page slspg = new sales_page();
+        List<Product_Table__c> prodTable = [SELECT ID FROM Product_Table__c LIMIT 1];
+        slspg.myProductId = prodTable[0].Id;
+        System.assertNotEquals(null, slspg.buy());
+    }    
+  @isTest static void testgetProductTables (){
+        sales_page slspg = new sales_page();
+        System.assertNotEquals(null, slspg.getProductTables());
+    }
+  @isTest static void testbtnCancel (){
+        sales_page slspg = new sales_page();
+        System.assertNotEquals(null, slspg.btnCancel());
+    }  
+  @isTest static void testbtnBuy () {
+
+        sales_page slspg = new sales_page();
+
+        Contact cont = new Contact(
+                LastName = 'Sacharchuk',
+                FirstName = 'Stas'
+        );
+
+        Order_Table__c ordTableTest = new Order_Table__c (
+                Units__c = 4,
+                Order_Amount__c = 0
+        );
+
+        insert cont;
+        insert ordTableTest;
+
+        slspg.contactinformation  = new Contact(
+                LastName = 'Sacharchuk',
+                FirstName = 'Stas'
+        );
+
+        slspg.InstanceOfObject  = new Order_Table__c (
+                Units__c = 4,
+                Order_Amount__c = 0
+        );
+
+        slspg.productField = new Product_Table__c(
+                Name = 'Nokia_16_00',
+                Image_URL__c = 'https://c.ap8.visual.force.com/resource/1550824452000/Xiaomi',
+                Unit_Price__c = 100,
+                Product_description__c = 'phone that Can not be broken, in a word brick',
+                Units_Available__c = 1
+        );
+
+        slspg.btnBuy();
+
+    }    
+    
+    @isTest static void testbtnBuy2 () {
+
+        sales_page slspg = new sales_page();
+
+       
+        
+        slspg.InstanceOfObject  = new Order_Table__c (
+                Units__c = 1,
+                Order_Amount__c = 0
+        );
+        
+        Contact cont = new Contact(
+                LastName = 'Sacharchuk',
+                FirstName = 'Stas'
+        );
+
+        Order_Table__c ordTableTest = new Order_Table__c (
+                Units__c = 1,
+                Order_Amount__c = 0
+        );
+
+        insert cont;
+        insert ordTableTest;
+
+        slspg.contactinformation  = new Contact(
+                LastName = 'Sacharchuk',
+                FirstName = 'Stas',
+                Email = 'ssahar@gmail.com'
+        );
+
+        slspg.InstanceOfObject  = new Order_Table__c (
+                Units__c = 1,
+                Order_Amount__c = 0
+        );
+
+        slspg.productField = new Product_Table__c(
+                Name = 'Nokia_16_00',
+                Image_URL__c = 'https://c.ap8.visual.force.com/resource/1550824452000/Xiaomi',
+                Unit_Price__c = 100,
+                Product_description__c = 'phone that Can not be broken, in a word brick',
+                Units_Available__c = 5
+        );
+
+        slspg.btnBuy();
+
+    } 
+    
+  @isTest static  void testCalculateOrderAmount () {
+        sales_page slspg = new sales_page();
+
+        slspg.InstanceOfObject  = new Order_Table__c (
+                Units__c = 1,
+                Order_Amount__c = 0
+        );
+
+        slspg.productField = new Product_Table__c(
+                Name = 'Nokia_16_00',
+                Image_URL__c = 'https://c.ap8.visual.force.com/resource/1550824452000/Xiaomi',
+                Unit_Price__c = 100,
+                Product_description__c = 'phone that Can not be broken, in a word brick',
+                Units_Available__c = 5
+        );
+
+        slspg.calculateOrderAmount();
+
+        System.assertNotEquals(null, slspg.InstanceOfObject);
+
+    }
+}
