@@ -1,0 +1,79 @@
+public class sales_page {
+   public List<Product_Table__c> getProductTables() {
+        List<Product_Table__c> listProduct = [SELECT Image_URL__c, ID, Unit_Price__c,  Name, Product_description__c  FROM Product_Table__c limit 100];
+        return listProduct;
+    }
+   public String myProductId {get; set;}
+   public Product_Table__c productField {get; set;}
+    
+   public PageReference RedirectToFullPageProduct() {
+        System.debug( 'This is my product id ---->' + myProductId);
+        productField = [SELECT Image_URL__c, ID, Unit_Price__c, Units_Available__c, Name, Product_description__c FROM Product_Table__c WHERE Id =: myProductId limit 1];
+        System.debug( 'This is my product fields ---->' + productField);
+        return Page.more_page;
+    }
+ 
+   public PageReference btnCancel() {
+   PageReference perz=Page.sales_page;
+   perz.setRedirect(true);
+   return perz;
+} 
+  
+   public PageReference buy(){
+    
+        productField = [SELECT Image_URL__c, ID, Unit_Price__c, Units_Available__c, Name, Product_description__c FROM Product_Table__c WHERE Id =: myProductId limit 1];
+        System.debug(productField);
+        return Page.buy_page;
+    }
+  public Order_Table__c InstanceOfObject {get;set;} 
+  public Contact contactinformation {get;set;} 
+  public sales_page () {
+        contactinformation = new Contact(LastName='.',FirstName='',Email='');
+        InstanceOfObject = new Order_Table__c(Units__c = 0, Order_Amount__c = 0);
+    } 
+ 
+  public void btnBuy () {
+        List<Contact> checkcontact = [SELECT Email, Id, FirstName, LastName FROM Contact WHERE Email =: contactinformation.Email LIMIT 1];
+
+        if(InstanceOfObject .Units__c > productField.Units_Available__c) {
+            ApexPages.addmessage(new ApexPages.message(ApexPages.severity.Error, 'no stock so much merchandise ' + productField.Units_Available__c));
+        } else {
+            try{
+                if (checkcontact .isEmpty()) {
+                    Contact mainListContact = new Contact();
+                    mainListContact.Email = contactinformation.Email;
+                    mainListContact.FirstName = contactinformation.FirstName;
+                    mainListContact.LastName = contactinformation.LastName;
+                    insert mainListContact;
+                } else {
+                    checkcontact [0].FirstName = contactinformation.FirstName;
+                    checkcontact [0].LastName = contactinformation.LastName;
+                    update checkcontact ;
+                }
+
+                Order_Table__c orderTableProduct = new Order_Table__c();
+                orderTableProduct.Product__c = productField.Id;
+                orderTableProduct.Contact__c = contactinformation .Id;
+                orderTableProduct.Units__c = InstanceOfObject .Units__c;
+                orderTableProduct.Order_Amount__c = InstanceOfObject .Units__c * productField.Unit_Price__c;
+                insert orderTableProduct;
+
+                productField.Units_Available__c-= InstanceOfObject .Units__c;
+                update productField;
+
+                ApexPages.addmessage(new ApexPages.message(ApexPages.severity.CONFIRM, 'thank you! the order is processed'));
+
+            } catch(Exception ex){
+                ApexPages.addMessages(ex);
+            }
+        }
+    } 
+ 
+  public void calculateOrderAmount () {
+        if(InstanceOfObject.Units__c > 0 ) {
+            InstanceOfObject.Order_Amount__c = InstanceOfObject.Units__c * productField.Unit_Price__c;
+        } else {
+            System.debug('Error data');
+        }
+    }
+}
