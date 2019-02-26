@@ -1,0 +1,49 @@
+<apex:page controller="sales_page" lightningStyleSheets="true">
+ <apex:slds />
+ 
+   <apex:pageBlock title="ProductList">
+    <apex:form >
+     <apex:pageBlockTable value="{!ProductTables}" var="Product" styleClass="slds-table">
+       <apex:column headervalue="Image" style="width: 15%;">
+       <apex:image value="{!Product.Image_Url__c}" width="120" height="55"/>
+      </apex:column>
+      
+      <apex:column headervalue="" style="width: 10%;" >
+       <apex:commandLink value="{!Product.Name}" action="{!redirectToFullPageProduct}">
+       <apex:param value="{!Product.Id}" name="recordID" assignTo="{!myProductId}"/>
+       </apex:commandLink>
+      </apex:column>
+   
+       <apex:column headervalue="Description" style="width: 50%; white-space: normal;">
+       <apex:outputText value="{!IF(LEN(Product.Product_Description__c)>100,
+                                LEFT(Product.Product_Description__c,80) + '....' ,
+                                Product.Product_Description__c)}">
+       </apex:outputText>   
+       
+     <apex:outputLink rendered="{!LEN(Product.Product_Description__c) > 100}"> 
+      <a href="about:blank" target="_blank">                     
+       <apex:commandLink action="{!redirectToFullPageProduct}">
+        <apex:param value="{!Product.Id}" name="recordID" assignTo="{!myProductId}"/>
+        More
+       </apex:commandLink>
+      </a>
+     </apex:outputLink>
+      </apex:column>
+      
+      <apex:column headervalue="Cost" style="width: 15%;">
+       <apex:outputText value="{!Product.Unit_Price__c} $">
+       
+       </apex:outputText>
+      </apex:column>
+   
+       <apex:column headerValue=""> 
+        <apex:commandLink ACTION="{!Buy}" styleClass="slds-button slds-button_brand">   
+         <apex:param value="{!Product.Id}" name="recordID" assignTo="{!myProductId}"/>    
+             Buy      
+        </apex:commandLink>              
+      </apex:column>  
+     </apex:pageBlockTable>
+    </apex:form>
+ </apex:page>
+
+</apex:page>
